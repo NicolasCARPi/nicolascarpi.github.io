@@ -1,0 +1,12 @@
+# Site settings
+title: Nico's geeky place
+email: ilovespam@yopmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  I will use this place to relate my geeky adventures in the world of gnu/linux, bsd, the internets, and other important things like windows managers and pretty colors. Basically, it's a place to expose and share with the world things I do on my computer.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "https://nicolascarpi.github.io" # the base hostname & protocol for your site
+twitter_username: elabftw
+github_username:  nicolascarpi
+
+# Build settings
+markdown: kramdown
