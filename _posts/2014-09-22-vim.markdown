@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "vim"
+date:   2014-09-22 00:46:44
+categories: text editor cli 
+---
+Here be a post where I describe my love for vim, a software that I've used for years and mastered about 10% of its capabilities.
+
+But not now.
+
+~Nico

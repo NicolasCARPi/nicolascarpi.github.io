@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "tmux"
+date:   2014-09-23 00:46:44
+categories: cli terminal multiplexer
+---
+Here be a post where I describe my love for tmux, and I show a screenshot proving that I created the wiki page on the Archlinux wiki :)
+
+But not now.
+
+~Nico

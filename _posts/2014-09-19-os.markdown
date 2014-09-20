@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Get a real OS"
+title:  "OS"
 date:   2014-09-19 00:14:44
 categories: os gnu linux freebsd
 ---
