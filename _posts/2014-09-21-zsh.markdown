@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Get a real shell, use zsh"
+title:  "zsh"
 date:   2014-09-21 00:46:44
 categories: shell completion
 ---
@@ -38,6 +38,11 @@ The interesting bits :
 * an extract command that extract your archive (no need to remember the tar flags anymore)
 
 There is also a [git prompt script][] that shows the status of the current git repo. You should use it if you use git, it works very well.
+
+This is what it looks like :
+
+<center><img src='/img/zsh-scrot.png' alt='zsh' title='zsh'>
+</center>
 
 Use `source ~/.zshrc` to reload your config.
 
