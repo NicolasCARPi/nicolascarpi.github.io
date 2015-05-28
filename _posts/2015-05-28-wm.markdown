@@ -1,0 +1,38 @@
+---
+layout: post
+title:  "WM"
+date:   2015-05-28 13:37:00
+categories: os gnu linux window manager
+---
+This post aims to present my config for my window manager.
+
+
+After spending some time using [Openbox][], I decided I didn't want anymore to have to deal with windows repositionning and resizing, so I
+switched to a [tiling window manager][].
+
+I first used Awesome for some time, and I still like it a lot. But some things were suboptimal, like when you click fullscreen on a YouTube video,
+it opens the new fullscreen window in normal mode, so you have to put it fullscreen manually, and that is not cool. So after trying out [i3][], I went with
+what the cool kids are using : [bspwm][] (Binary Space Partitioning Window Manager).
+
+If you are used to Desktop Environnement, using such a WM can be destabilizing. Following the Unix philosophy ("Do one thing but do it well."), this window manager only manages windows.
+
+So you need to have a menu to launch apps, and maybe also a bar to show the title of windows, the virtual desktops, the time, things like this.
+
+For the WM, [my config is here][]. Nothing fancy here. At the end, it launches the [panel script][]. This little script allows me to have a bar at the top of my screen to display things. And this is where
+the fun happens, because the space for customizing is huge.
+
+The script creates a fifo, and it's piped to another script, which then outputs a string which is piped to lemonbar, a simple bar.
+
+Have a look at the intermediate script: [panel_bar][], you can see at the end I've added some scripts. One to display the number of available updates, one to display the battery, and one to display the music playing thanks to [mpd][].
+
+WIP
+To be continued…
+
+[Openbox]: http://openbox.org/wiki/Main_Page
+[tiling window manager]: https://en.wikipedia.org/wiki/Tiling_window_manager
+[i3]: https://i3wm.org/
+[bspwm]: https://github.com/baskerville/bspwm
+[my config is here]: https://github.com/NicolasCARPi/.dotfiles/blob/master/config/bspwm/bspwmrc
+[panel script]: https://github.com/NicolasCARPi/.bin/blob/master/panel
+[panel_bar]: https://github.com/NicolasCARPi/.bin/blob/master/panel_bar
+[mpd]: http://www.musicpd.org/
