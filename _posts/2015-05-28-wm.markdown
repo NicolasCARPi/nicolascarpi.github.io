@@ -6,7 +6,7 @@ categories: os gnu linux window manager
 ---
 This post aims to present my config for my window manager.
 
-# Tiling window manager FTW
+## Tiling window manager FTW
 
 After spending some time using [Openbox][], I decided I didn't want anymore to have to deal with windows repositionning and resizing, so I
 switched to a [tiling window manager][].
@@ -21,14 +21,14 @@ Here is what it looks like :
 
 This screenshot only shows one window, with tmux (3 panes and 5 windows), with vim (3 tabs), in urxvt (1 tab).
 
-# BSPWM
+## BSPWM
 
 If you are used to Desktop Environnement, using such a WM can be destabilizing. Following the Unix philosophy ("Do one thing but do it well."), this window manager only manages windows.
 
 So you need to have a menu to launch apps, and maybe also a bar to show the title of windows, the virtual desktops, the time, things like this.
 For the WM, [my config is here][]. Nothing fancy.
 
-# Panel
+## Panel
 At the end of the BSPWM config, it launches the [panel script][]. This little script allows me to have a bar at the top of my screen to display things. And this is where
 the fun happens, because the space for customizing is huge.
 
@@ -38,7 +38,7 @@ The script creates a fifo, and it's piped to another script, which then outputs 
 
 Have a look at the intermediate script: [panel_bar][], you can see at the end I've added some scripts. One to display the number of available updates, one to display the battery, and one to display the music playing thanks to [mpd][].
 
-## Pacman script
+# Pacman script
 
 Quite simple and straightforward:
 
@@ -55,7 +55,7 @@ fi
 {% endhighlight %}
 [File on GitHub](https://github.com/NicolasCARPi/.bin/blob/master/panel_pacman.sh)
 
-## Battery script
+# Battery script
 
 {% highlight bash %}
 #!/bin/sh
@@ -72,7 +72,7 @@ echo " ($percent) "
 {% endhighlight %}
 [File on GitHub](https://github.com/NicolasCARPi/.bin/blob/master/panel_battery.sh)
 
-## MusicPD script
+# MusicPD script
 
 You can't begin to imagine the hard work I had to put into writing this script:
 
@@ -81,6 +81,16 @@ You can't begin to imagine the hard work I had to put into writing this script:
 mpc current
 {% endhighlight %}
 [File on GitHub](https://github.com/NicolasCARPi/.bin/blob/master/panel_mpd.sh)
+
+Now what is cool about this musicpd part in the panel, is that I can toggle play/pause and adjust volume with the mouse like I used to do with [Awesompd][] back when I was using [Awesome WM][].
+To do that, I modified the [panel_bar][] script by adding the right tags :
+
+~~~
+printf "%s\n" "%{l}${wm_infos}%{c}${title}%{r}%{A1:mpc -q toggle:}%{A4:amixer -q set 'PCM' 2dB+:}%{A5:amixer -q set 'PCM' 2dB-:}${mpd}%{A}%{A}%{A} ${pacman}${battery}${sys_infos}"
+~~~
+
+A1 is left click, A4 and A5 are scroll wheel.
+
 
 
 [Openbox]: http://openbox.org/wiki/Main_Page
@@ -91,3 +101,5 @@ mpc current
 [panel script]: https://github.com/NicolasCARPi/.bin/blob/master/panel
 [panel_bar]: https://github.com/NicolasCARPi/.bin/blob/master/panel_bar
 [mpd]: http://www.musicpd.org/
+[Awesompd]: https://awesome.naquadah.org/wiki/Awesompd
+[Awesome WM]: https://awesome.naquadah.org/
