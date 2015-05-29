@@ -6,6 +6,7 @@ categories: os gnu linux window manager
 ---
 This post aims to present my config for my window manager.
 
+# Tiling window manager FTW
 
 After spending some time using [Openbox][], I decided I didn't want anymore to have to deal with windows repositionning and resizing, so I
 switched to a [tiling window manager][].
@@ -14,19 +15,73 @@ I first used Awesome for some time, and I still like it a lot. But some things w
 it opens the new fullscreen window in normal mode, so you have to put it fullscreen manually, and that is not cool. So after trying out [i3][], I went with
 what the cool kids are using : [bspwm][] (Binary Space Partitioning Window Manager).
 
+Here is what it looks like :
+
+[![desktop](https://i.imgur.com/Z5E9q5R.png)](https://i.imgur.com/Z5E9q5R.png)
+
+This screenshot only shows one window, with tmux (3 panes and 5 windows), with vim (3 tabs), in urxvt (1 tab).
+
+# BSPWM
+
 If you are used to Desktop Environnement, using such a WM can be destabilizing. Following the Unix philosophy ("Do one thing but do it well."), this window manager only manages windows.
 
 So you need to have a menu to launch apps, and maybe also a bar to show the title of windows, the virtual desktops, the time, things like this.
+For the WM, [my config is here][]. Nothing fancy.
 
-For the WM, [my config is here][]. Nothing fancy here. At the end, it launches the [panel script][]. This little script allows me to have a bar at the top of my screen to display things. And this is where
+# Panel
+At the end of the BSPWM config, it launches the [panel script][]. This little script allows me to have a bar at the top of my screen to display things. And this is where
 the fun happens, because the space for customizing is huge.
+
+![panel](https://i.imgur.com/a7upOjR.png)
 
 The script creates a fifo, and it's piped to another script, which then outputs a string which is piped to lemonbar, a simple bar.
 
 Have a look at the intermediate script: [panel_bar][], you can see at the end I've added some scripts. One to display the number of available updates, one to display the battery, and one to display the music playing thanks to [mpd][].
 
-WIP
-To be continued…
+## Pacman script
+
+Quite simple and straightforward:
+
+{% highlight bash %}
+#!/bin/sh
+n=`pacman -Qu | wc -l`
+if [ $n == 0 ]; then
+    echo ""
+elif [ $n == 1 ]; then
+    echo "[$n update]"
+else
+    echo "[$n updates]"
+fi
+{% endhighlight %}
+[File on GitHub](https://github.com/NicolasCARPi/.bin/blob/master/panel_pacman.sh)
+
+## Battery script
+
+{% highlight bash %}
+#!/bin/sh
+full=$(cat /sys/class/power_supply/BAT0/charge_full)
+current=$(cat /sys/class/power_supply/BAT0/charge_now)
+status=$(cat /sys/class/power_supply/BAT0/status)
+percent=$(($current * 100 / $full))
+if [ $percent -lt 10 ];then
+    if [ $status != 'Charging' ];then
+        notify-send 'PLUG DA BATTERY'
+    fi
+fi
+echo " ($percent) "
+{% endhighlight %}
+[File on GitHub](https://github.com/NicolasCARPi/.bin/blob/master/panel_battery.sh)
+
+## MusicPD script
+
+You can't begin to imagine the hard work I had to put into writing this script:
+
+{% highlight bash %}
+#!/bin/sh
+mpc current
+{% endhighlight %}
+[File on GitHub](https://github.com/NicolasCARPi/.bin/blob/master/panel_mpd.sh)
+
 
 [Openbox]: http://openbox.org/wiki/Main_Page
 [tiling window manager]: https://en.wikipedia.org/wiki/Tiling_window_manager
