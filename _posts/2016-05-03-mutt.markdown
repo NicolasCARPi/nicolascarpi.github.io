@@ -1,0 +1,291 @@
+---
+layout: post
+title:  "mutt"
+date:   2016-02-28 01:14:00
+categories: email mutt
+---
+[Mutt][] is my email client. It is not perfect, but it's better than most (if not all) clients. As you can see by the size of this post, it needs a lot of tweaking to get it as you'd like it to be. But that's what we like to do, no? Editing config files all day long. If you don't like that, you are in the wrong place my friend ;).
+
+This is what my email client looks like at work:
+
+[![mutt](/img/mutt-1.png)](/img/mutt-1.png)
+
+## The configuration
+
+In my `~/.mutt/muttrc` I have :
+
+### Several mailboxes
+
+~~~conf
+folder-hook 'flood.fr' 'source ~/.mutt/accounts/flood'
+folder-hook 'curie.fr' 'source ~/.mutt/accounts/curie'
+# switch to default account on startup
+source ~/.mutt/accounts/curie
+~~~
+
+See macros below for how I switch between mailboxes.
+
+### Encrypted passwords
+
+Of course, nobody would want to keep their password in cleartext in the configuration file. Let's encrypt them with gpg.
+
+~~~sh
+$ mkdir -p ~/.mutt/accounts && cd ~/.mutt/accounts
+$ vim auth
+~~~
+
+The file `~/.mutt/accounts/auth`:
+
+~~~conf
+set imap_pass='secr3t'
+set smtp_pass='secr3t'
+~~~
+
+Now encrypt it:
+
+~~~sh
+$ gpg -r your.email@provider.net -e auth
+$ shred -u auth
+~~~
+
+It will give you a `auth.gpg` file. Now to use it in mutt, add this to your `~/.mutt/muttrc`:
+
+~~~conf
+source "gpg -dq ~/.mutt/accounts/auth.gpg |"
+~~~
+
+Now for gpg configuration, in `~/.mutt/gnupg/gpg-agent.conf`:
+
+~~~conf
+pinentry-program /usr/bin/pinentry-curses
+allow-loopback-pinentry
+~~~
+
+
+### Macros
+
+I only have three macros. F1 will clean my inbox (send everything to Archived folder). F2 and F3 allow me to switch email accounts.
+
+File `~/.mutt/macros`
+
+~~~conf
+macro index <f1> "<tag-pattern>~A<enter><tag-prefix><save-message>=Archived<enter><sync-mailbox>" "mv all messages to Archived"
+macro index <f2> "<sync-mailbox><enter-command>source ~/.mutt/accounts/curie<enter><change-folder>!<enter>" "change to curie mail"
+macro index <f3> "<sync-mailbox><enter-command>source ~/.mutt/accounts/flood<enter><change-folder>!<enter>" "change to flood mail"
+~~~
+
+And in `~/.mutt/muttrc`:
+
+~~~conf
+# load macros
+source ~/.mutt/macros
+~~~
+
+
+### Aliases
+
+~~~conf
+# aliases
+set alias_file= ~/.mutt/aliases
+source ~/.mutt/aliases
+~~~
+
+### Format on index
+
+~~~conf
+set index_format = "%4C %S %(%H:%M) %-20.20F %s %> %D"
+~~~
+
+This shows the hour:minute next to the email, and the date is on the right side of the screen.
+
+### Email from my boss is shown in red
+
+~~~conf
+color index brightred default '~f my.boss@company.fr'
+~~~
+
+### Headers
+
+Mutt makes it very easy to modify headers. This is what I have:
+
+~~~conf
+ignore *
+unignore From: Date: Subject: To: Cc:
+unignore User-agent: X-agent: X-mailer: X-newsreader: X-operating-system: X-info: X-uri:
+hdr_order Date: To: Cc: From:  Organization: X-Info: X-URI: Reply-To: X-Mailer: User-Agent: X-Operating-System: Subject:
+set user_agent = no    # Don't let Mutt identify itself, I want to use a custom id
+my_hdr User-Agent: Every email client sucks, this one just sucks less.    # My custom id for Mutt
+~~~
+
+It shows me the mail client used by the sender. And on the email I send I add a custom User-agent header :)
+
+
+### The bottom line
+
+~~~conf
+set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+~~~
+
+
+### Show index in pager mode
+
+~~~conf
+set pager_index_lines=7
+~~~
+
+This way I can see a bit from the index when an email is opened. This is what an opened email looks like:
+
+[![mutt2](/img/mutt-2.png)](/img/mutt-2.png)
+
+### Attachments
+
+To view attachments I press 'v' and then I can either save them or open them with the corresponding app.
+
+You need to have a `~/.mailcap` file that looks like this:
+
+~~~conf
+# use elinks to view html emails in mutt
+text/html; elinks -dump -dump-charset utf-8 -default-mime-type text/html %s; needsterminal; copiousoutput;
+application/pdf; evince '%s'
+image/png; gpicview '%s'
+image/jpeg; gpicview '%s'
+application/msword; libreoffice '%s'
+application/vnd.openxm; libreoffice '%s'
+application/vnd.ms-exec; libreoffice '%s'
+~~~
+
+### Signature
+
+For my signature, I have a fixed part, and then a generated part from fortune. But I don't use the normal fortune, I use a specific source with quotes related to Science and or religion.
+
+In the `~/.mutt/muttrc`:
+
+~~~conf
+set signature = "python ~/.mutt/signature/mutt-sig.py|"
+~~~
+
+The `~/.mutt/signature/mutt-sig.py` file:
+
+~~~py
+import os,sys,subprocess
+SIGNATURE_FILE=os.path.expanduser("~/.mutt/signature/base.sig")
+FORTUNE_COMMAND="fortune ~/.mutt/signature/fortune-science"
+def delete_previous():
+    fp  = open(SIGNATURE_FILE,"r")
+    lines = fp.readlines()
+    fp.close()
+    fp = open(SIGNATURE_FILE,"w")
+    for line in lines:
+        if line.startswith('\"\"'):
+            break
+        fp.write(line)
+    fp.close()
+
+def add_quote():
+    if sys.version[0]=='3':
+        x=subprocess.getstatusoutput(FORTUNE_COMMAND)
+    if sys.version[0]=='2':
+        x=[0]+[subprocess.check_output(FORTUNE_COMMAND.split())[:-1]]
+    if x[0]==0:
+        delete_previous()
+        fp = open(SIGNATURE_FILE,"a")
+        fp.writelines("\"\" "+x[1]+" \"\"")
+        fp.close()
+        print_signature()
+    else:
+        print("Some problem with the fortune program, see if it is installed")
+        exit(-1)
+def print_signature():
+    fp = open(SIGNATURE_FILE,"r")
+    lines=fp.readlines()
+    fp.close()
+    print(''.join(lines))
+if __name__=='__main__':
+    add_quote()
+~~~
+
+The file `~/.mutt/signature/base.sig` has a quote at the end starting with `""`. The script will replace it with a new one on each email.
+
+The fortune source file is [here](/img/fortune-science.txt). The command to "compile" it is:
+
+~~~sh
+$ strfile fortune-science.txt fortune-science.dat
+~~~
+
+### Random settings
+
+~~~conf
+set help=no # remove top bar
+set sort=threads # default sort messages by thread
+set sort_browser=reverse-date # showing mbox list default to newest first
+set sort_aux=last-date-received # showing threads with youngest message last
+set quit=ask-yes #ask before quit
+set postpone=ask-no #ask before postpone, default to no
+set delete=yes #really delete messages
+set include #include message on reply
+set arrow_cursor # get an arrow for cursor
+set confirmappend=no
+set mime_forward=ask-no #Forward attached or in body? Ask.
+set pager_stop # don't go to next message automatically
+unset markers # no + signs
+set tilde # show tilde like in vim
+~~~
+
+### Keybindings
+
+If like me you are using [Bépo][], you'll find these keybindings very useful:
+
+~~~conf
+# index keybindings
+#
+# replace j/k (bepo)
+bind index t next-undeleted
+bind index s previous-undeleted
+# tag
+bind index e tag-entry
+# c to compose like in gmail
+bind index c mail
+bind index C change-folder
+bind index S save-message
+# force retrieval of new mails
+bind index ê imap-fetch-mail
+bind index R group-reply
+# p for searching opposite (n for next)
+bind index p search-opposite
+# for tagging (because now t is go down)
+bind index , tag-pattern
+bind index gg first-entry
+bind index G last-entry
+
+
+# pager options
+#
+bind pager S save-message
+bind pager t next-undeleted
+bind pager s previous-undeleted
+bind pager b previous-page
+bind pager B bounce-message
+# R for reply to all
+bind pager R group-reply
+bind pager gg top
+bind pager G bottom
+
+# for view attachement screen
+bind generic t next-entry
+bind compose s send-message
+bind compose S edit-subject
+~~~
+
+## Conclusion
+
+As you can see using mutt means spending at least a day fiddling with the configuration files… And I didn't even talk about the whole gnupg integration for signing/encrypting emails…
+
+Reference : [Mutt manual][]
+
+I hope this post will help you get the best out of your mutt. Enjoy!
+
+~Nico
+
+[Mutt]: http://www.mutt.org/
+[Bépo]: https://bepo.fr
+[Mutt manual]: http://www.mutt.org/doc/manual/manual-6.html
