@@ -1,0 +1,36 @@
+---
+layout: post
+title:  "Suspend"
+date:   2016-06-09 13:37:00
+categories: os gnu linux systemd
+---
+This post is to sum up the changes I needed to make to the suspend function.
+
+## Using systemd for suspend
+
+At the end of the day, I put my computer in sleep mode with this command: `sudo systemctl suspend`.
+
+But anyone can resume it from sleep and access the computer. So I needed to launch `slock` before to lock the screen.
+
+## Using systemd hooks
+
+Fortunately, systemd allows you to have hooks. In `/etc/systemd/system/`, add a file `suspend@user.service`.
+
+Here is the file:
+
+{% highlight conf %}
+[Unit]
+Description=User suspend actions
+Before=sleep.target
+
+[Service]
+User=user
+Type=simple
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/slock
+
+[Install]
+WantedBy=sleep.target
+{% endhighlight %}
+
+Now, when the computer is waking up, slock is launched \o/
