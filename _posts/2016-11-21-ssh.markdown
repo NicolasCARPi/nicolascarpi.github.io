@@ -1,0 +1,56 @@
+---
+layout: post
+title:  "ssh"
+date:   2016-11-20 01:10:00
+categories: shell
+---
+How to configure an ssh server, using good crypto and secure settings.
+
+Delete all the host keys and create a fresh one:
+
+~~~bash
+cd /etc/ssh
+rm ssh_host_*key*
+ssh-keygen -t ed25519 -f ssh_host_ed25519_key
+~~~
+
+Edit the main configuration file `/etc/ssh/sshd_config`:
+
+* Change the port for something else than the default one (22)
+
+`Port 50000`
+
+* Delete the HostKey lines except the ed25519 one
+
+`HostKey /etc/ssh/ssh_host_ed25519_key`
+
+* `PermitRootLogin no`
+* `PasswordAuthentication no`
+* Add this at the end:
+
+~~~
+AllowGroups ssh-user
+KexAlgorithms curve25519-sha256@libssh.org
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com
+~~~
+
+* Put your user in the ssh-user group
+
+~~~bash
+usermod -a -G ssh-user <username>
+~~~
+
+* Copy your public key
+
+~~~sh
+ssh-copy-id ~/.ssh/id_ed25519.pub <user>@<server>
+~~~
+
+Reload the server and you should be good to go :)
+
+Nearly all of the above is taken from [this article][], which contains much more explanations, this is a TL;DR version.
+
+~Nico
+
+[this article]: https://stribika.github.io/2015/01/04/secure-secure-shell.html
