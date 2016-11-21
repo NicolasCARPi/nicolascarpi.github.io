@@ -38,6 +38,7 @@ MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-
 * Put your user in the ssh-user group
 
 ~~~bash
+groupadd ssh-user
 usermod -a -G ssh-user <username>
 ~~~
 
