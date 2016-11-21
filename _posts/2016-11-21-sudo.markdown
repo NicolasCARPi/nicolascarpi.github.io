@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "sudo"
+date:   2016-11-20 00:46:44
+categories: configs
+---
+Only two things for sudo config, add insults when you mistype your password and have a cooler prompt.
+
+~~~bash
+sudo visudo
+~~~
+
+Add :
+
+~~~
+Defaults insults
+Defaults passprompt="➜ "
+~~~
