@@ -67,7 +67,6 @@ server {
     …
 ~~~
 
-~~~sh
 ## Get a certificate
 
 Edit `/etc/acme-client.conf` and add a domain like so:

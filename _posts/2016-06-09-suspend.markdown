@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Suspend"
-date:   2016-06-09 13:37:00
+date:   2015-06-09 13:37:00
 categories: os gnu linux systemd
 ---
 This post is to sum up the changes I needed to make to the suspend function.
