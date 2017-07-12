@@ -138,7 +138,7 @@ ssl_prefer_server_ciphers on;
 Don't forget to replace elabftw.example.org by your own domain name:
 
 ~~~sh
-sed -ie 's/elabftw.example.org/$DOMAIN/g' /etc/nginx/nginx.conf
+sed -ie 's/elabftw.example.org/'"$DOMAIN"'/g' /etc/nginx/nginx.conf
 ~~~
 
 Also make sure to uncomment the three lines defining the "main" log format.
