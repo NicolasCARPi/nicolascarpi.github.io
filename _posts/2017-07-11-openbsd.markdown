@@ -141,6 +141,8 @@ Don't forget to replace elabftw.example.org by your own domain name:
 sed -ie 's/elabftw.example.org/$DOMAIN/g' /etc/nginx/nginx.conf
 ~~~
 
+Also make sure to uncomment the three lines defining the "main" log format.
+
 Generate the dhparam.pem file:
 
 ~~~sh
