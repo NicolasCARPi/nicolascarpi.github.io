@@ -32,7 +32,7 @@ In `about.config` set `extensions.pocket.enabled` to `false`.
 
 ## Don't accept third party cookies
 
-Their only purpose is to track you, so fuck'em.
+I never had any issue blocking them, they might be necessary for some types of single-sign-on systems (thanks [u/moosingin3space](https://www.reddit.com/user/moosingin3space) for pointing that out) but I never encountered any issue. Most of them are for tracking users so let's block'em.
 
 In `about:preferences` block all third party cookies.
 
