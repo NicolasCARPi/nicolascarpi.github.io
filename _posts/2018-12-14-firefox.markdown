@@ -1,0 +1,77 @@
+---
+layout: post
+title:  "The first five minutes on Firefox"
+date:   2018-12-14 04:20:00
+categories: firefox config
+---
+After a fresh install of Firefox, here are the steps I deem necessary to have a nice and obedient browser:
+
+## Addons
+
+Let's start with the plugins:
+
+### The essentials
+* ![uBlock Origin](/img/ublockorigin.png) [uBlock Origin] to block ads.
+* ![NoScript](/img/noscript.png) [NoScript] to block javascripts unless whitelisted. After installing it, it takes some days to have your favorite trusted websites whitelisted, but it's very much worth it. Unless you enjoy executing random code all the time, with 80% of this code written to track you on the web…
+
+### The rest
+* ![Flagfox](/img/flagfox.png) [FlagFox] because I like seeing where the server is located. It also comes with some useful tools if you right click the flag in the address bar.
+* ![Vimium](/img/vimium.png) [Vimium] to add Vim like motions and controls to firefox. This plugin works very well and is very customizable. You can find my config in my [.dotfiles repository]. The ability to save/load a config file is very nice.
+
+## When typing in address bar, look into bookmarks first
+
+If something is bookmarked, it is what I want to access when typing in address bar, not do a search about it. So let's make sure it shows up first.
+
+In `about:config` set `places.frecency.bookmarkVisitBonus` and `places.frecency.unvisitedBookmarkBonus` to `1000`.
+
+## Remove the Pocket crap
+
+I don't use it. And if you don't, you should disable it too.
+
+In `about.config` set `extensions.pocket.enabled` to `false`.
+
+## Don't accept third party cookies
+
+Their only purpose is to track you, so fuck'em.
+
+In `about:preferences` block all third party cookies.
+
+![cookies](/img/cookies-config.png)
+
+## Set the home page
+
+My home page is a local html file, found in my [.dotfiles repository]. It's pretty simple, it does nothing but allows you to write in it (*via* the *contenteditable* attribute). And the background color is the same as the UI.
+
+## A sane new tab
+
+I really dislike having my history displayed on a new tab.
+
+In `about:config` set `browser.newtab.preload` to `false`.
+
+Unfortunately it is no longer possible to display a local file (like the home page) :(.
+
+## Restore original behavior of Ctrl-Tab and Ctrl-Shift-Tab
+
+I want to be able to go through my tabs with Ctrl-Tab and Ctrl-Shift-Tab to go in the other direction.
+
+In `about:config` set `browser.ctrlTab.recentlyUsedOrder` to `false`.
+
+## Miscellaneous
+
+* Save downloads in home (I don't have a Desktop folder anymore)
+* Disable spelling (I deeply hate spelling checks)
+* Disable warn when closing multiple tabs
+* Remove home button frome toolbar
+* Show menu bar and bookmarks toolbar
+* Put the NoScript icone in top left because that's where the mouse is closer to most often
+* Remove useless search engines and set the default as something else than google (I host my own [Searx] instance)
+
+
+That's about it. A lot more settings could be altered but we said *the first 5 minutes* ;)
+
+[uBlock Origin]: https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/ 
+[NoScript]: https://addons.mozilla.org/en-US/firefox/addon/noscript/
+[FlagFox]: https://addons.mozilla.org/en-US/firefox/addon/flagfox/
+[Vimium]: https://addons.mozilla.org/en-US/firefox/addon/vimium-ff/
+[.dotfiles repository]: https://github.com/NicolasCARPi/.dotfiles/
+[Searx]: https://asciimoo.github.io/searx/
