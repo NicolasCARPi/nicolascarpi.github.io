@@ -1,6 +1,6 @@
 # Description
 
-This repo is the source code for [https://nicolascarpi.github.io](my blog).
+This repo is the source code for [my blog](https://nicolascarpi.github.io).
 
 # Build and serve
 
