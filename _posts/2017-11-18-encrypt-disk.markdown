@@ -12,7 +12,7 @@ export disk='data'
 export device='/dev/sdb'
 
 # partition the disk
-gdisk
+gdisk $device
 o
 n
 partition code 8309 (Linux LUKS)
