@@ -415,7 +415,7 @@ sudo pacman -S bdf-unifont ttf-dejavu ttf-gentium ttf-freefont adobe-source-code
 sudo pacman -S zip unzip unrar xarchiver
 ~~~
 
-Select Xarchiver in preferences of pcmanfm
+Select Xarchiver in preferences of pcmanfm.
 
 #### Python
 
