@@ -241,7 +241,7 @@ I can do a lot of things in the console as most of my favorite tools are text ba
 
 ~~~bash
 # install the graphics drivers, xinit, compositing manager, notification daemon, sound, music, cursor hider, terminal emulator and WM
-sudo pacman -S mesa xf86-video-amdgpu xorg-xinit xcompmgr twmnd pulseaudio mpd unclutter rxvt-unicode awesome
+sudo pacman -S mesa xf86-video-amdgpu xorg-xinit xcompmgr twmnd pulseaudio mpd unclutter rxvt-unicode awesome pcmanfm firefox chromium
 ~~~
 
 The content of my `~/.xinitrc` file:
@@ -388,3 +388,45 @@ account default : smtp2go
 sudo systemctl start smartd
 sudo systemctl enable smartd
 ~~~
+
+#### Cronjobs
+
+~~~bash
+sudo pacman -S cronie
+sudo systemctl start cronie
+sudo systemctl enable cronie
+~~~
+
+#### mutt config
+
+See post on [Mutt](/email/mutt/2016/02/28/mutt.html)
+
+#### Fonts
+
+It was difficult to find a font with the correct set of UTF-8 characters.
+
+~~~bash
+sudo pacman -S bdf-unifont ttf-dejavu ttf-gentium ttf-freefont adobe-source-code-pro-fonts freetype2 ttf-ms-fonts noto-fonts noto-fonts-extra noto-fonts-cjk terminus-fonts
+~~~
+
+#### Archiving
+
+~~~bash
+sudo pacman -S zip unzip unrar xarchiver
+~~~
+
+Select Xarchiver in preferences of pcmanfm
+
+#### Python
+
+~~~bash
+sudo pacman -S python-pip tk
+pip install --user pipenv
+~~~
+
+#### Miscellanous software
+
+~~~
+sudo pacman -S baobab gimp docker-compose filezilla ncmpcpp dos2unix jre-openjdk php php-cli picard alsa-utils pulseaudio-alsa dnsutils nmap fortune scrot gvfs gparted dosfstools udisks2 htop mpc mlocate pass vlc mplayer cmake docker cmatrix rsync gdisk openssh
+~~~
+

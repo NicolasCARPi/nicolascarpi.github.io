@@ -144,8 +144,8 @@ To view attachments I press 'v' and then I can either save them or open them wit
 You need to have a `~/.mailcap` file that looks like this:
 
 ~~~conf
-# use elinks to view html emails in mutt
-text/html; elinks -dump -dump-charset utf-8 -default-mime-type text/html %s; needsterminal; copiousoutput;
+# use w3m to view html emails in mutt
+text/html; w3m -I %{charset} -T text/html; copiousoutput;
 application/pdf; evince '%s'
 image/png; gpicview '%s'
 image/jpeg; gpicview '%s'
