@@ -4,8 +4,230 @@ title:  "vim"
 date:   2014-09-22 00:46:44
 categories: text editor cli 
 ---
-Here be a post where I describe my love for vim, a software that I've used for years and mastered about 10% of its capabilities.
 
-But not now.
+Updated in february 2019.
 
-~Nico
+## Introduction
+
+[Vim](https://www.vim.org/) is my text editor of choice. When I have to type some text outside of Vim I feel like I'm working at 10% capacity and miss a lot of the features it offers (like deleting a line with `dd`).
+
+This post aims to explain my vim config and all the nice things I added over the years. If you use vim, you might want to keep reading ;)
+
+
+## The config folder
+
+All the vim related files are in `~/.vim`, even the `vimrc` file, it doesn't need to be in $HOME.
+
+## The plugin manager
+
+I chose [Vundle](https://github.com/VundleVim/Vundle.vim). In my [.dotfiles repository](https://github.com/NicolasCARPi/.dotfiles) it is cloned as a submodule in `~/.vim/bundle`.
+
+~~~vim
+# file: ~/.vim/vimrc
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin("~/.vim/plugins")
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+" fold functions with space
+Plugin 'tmhedberg/SimpylFold'
+" check syntax of code
+Plugin 'vim-syntastic/syntastic'
+" show trailing whitespaces in red
+Plugin 'ntpeters/vim-better-whitespace'
+" go integration
+Plugin 'fatih/vim-go'
+" autocomplete when writing code
+Plugin 'Valloric/YouCompleteMe'
+" open file in new vim tab/buffer with fuzzy search
+Plugin 'ctrlpvim/ctrlp.vim'
+" show the git diff status of the line on the left of the file in real time
+Plugin 'airblade/vim-gitgutter'
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+~~~
+
+After a fresh install, open `vim` and type `:PluginInstall`. Then follow the instructions to finish installing YCM.
+
+## Use Tab not Escape
+
+Let's talk about something important: when Vim was created the keyboard looked like this:
+
+![vim-keyboard](/img/vim-kbd.jpg)
+
+As you can see, there are arrows on the HJKL keys, and more importantly, the ESC key was where we find Tab today. So it makes a lot of sense to remap the key to switch modes from Esc to Tab because it's much more accessible!
+
+If you've been using Vim without this change, well, that sucks. Esc is way too far!
+
+Corresponding config in `~/.vim/vimrc`:
+
+~~~vim
+" Tab is Esc, and Shift Tab is Tab
+inoremap <Tab> <Esc>
+inoremap <S-Tab> <Tab>
+vnoremap <Tab> <Esc>
+vnoremap <S-Tab> <Tab>
+~~~
+
+## Tabs navigation
+
+I like tabs in vim. The key is not to have too many of them. But because it's very easy to reopen a tab with CtrlP, I close them often.
+
+Here is the config for using Ctrl-n and Ctrl-p for respectively next and previous tabs.
+
+~~~vim
+" tab navigation Ctrl-n for next, Ctrl-p for previous
+nmap <silent> <C-n> :tabnext<CR>
+nmap <silent> <C-p> :tabprev<CR>
+imap <silent> <C-n> <esc><C-n>
+imap <silent> <C-p> <esc><C-p>
+~~~
+
+Also, I've shortened the name of the tabnew command:
+
+~~~vim
+" :tn for tabnew
+ca tn tabnew
+~~~
+
+## CtrlP config
+
+~~~vim
+" use Ctrl-c to open CtrlP
+let g:ctrlp_map = '<c-c>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" open in a new tab
+let g:ctrlp_prompt_mappings = {
+  \ 'AcceptSelection("e")': [],
+  \ 'AcceptSelection("t")': ['<cr>', '<c-m>'],
+  \ }
+~~~
+
+## Better whitespace config
+
+~~~vim
+" configure better whitespace plugin to allow markdown
+let g:better_whitespace_filetypes_blacklist=['diff', 'gitcommit', 'unite', 'qf', 'help']
+~~~
+
+## YCM config
+
+I find Ctrl-t quite nice to go down the list of autocompletion.
+
+~~~vim
+" fix the Tab key being used
+" use C-t and C-s to go through the list
+" disable ctrl-t
+map <C-t> <Nop>
+" disable ctrl-s
+map <C-s> <Nop>
+let g:ycm_key_list_select_completion = ['<C-t>']
+let g:ycm_key_list_previous_completion = ['<C-s>']
+~~~
+
+## Folds setup
+
+~~~vim
+" FOLDS
+set foldenable
+set foldmethod=indent
+set foldlevel=99
+
+" save/restore foldings
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
+
+" get space to show/hide folds
+nnoremap <Space> za
+
+" show python docstring in the fold
+let g:SimpylFold_docstring_preview = 1
+~~~
+
+## Misc
+
+~~~vim
+" :v for vsplit
+ca v vsplit
+" Enable mouse
+set mouse=a
+" utf8 ftw
+set encoding=utf-8
+" Case insensitive search
+set ignorecase
+" search is case sensitive only if you put a CAPITAL
+set smartcase
+" keep history
+set undofile
+set undodir=~/.vim/undodir
+" remove the Ex mode (also known as pain in the ass mode)
+nnoremap Q <nop>
+" Create backup files
+set backup
+set writebackup
+set backupdir=~/.vim/backup
+set directory=~/.vim/backup
+" fix the backspace problem
+set backspace=indent,eol,start
+set history=50 " keep 50 lines of command line history
+set ruler " show the cursor position all the time
+set showcmd " display incomplete commands
+set incsearch " do incremental searching
+~~~
+
+## Remapping of basic keys
+
+I use the [bépo](https://bepo.fr/wiki/Accueil) keymapping (and you should too if you're french!), so there is a need to remap some of the keys. This is probably the oldest part of my vim config as I started typing in bépo before using vim!
+
+From the bépo.fr wiki page on Vim: https://bepo.fr/wiki/Vim
+
+~~~vim
+" [HJKL] -> {CTSR}
+" ————————————————
+noremap c h
+noremap r l
+" {ts} = « haut / bas »
+noremap t j
+noremap s k
+" {CR} = « haut / bas de l'écran »
+noremap C H
+noremap R L
+" {TS} = « joindre / aide »
+noremap T J
+noremap S K
+" Corollaire : repli suivant / précédent
+noremap zs zj
+noremap zt zk
+
+" {HJKL} <- [CTSR]
+" ————————————————
+" {J} = « Jusqu'à »            (j = suivant, J = précédant)
+noremap j t
+noremap J T
+" {L} = « Change »             (h = bloc, H = jusqu'à la fin de ligne)
+noremap l c
+noremap L C
+" {H} = « Remplace »           (l = caractère, L = texte)
+noremap h r
+noremap H R
+" {K} = « Substitue »          (k = caractère, K = ligne)
+noremap k s
+noremap K S
+
+" Désambiguation de {g}
+" —————————————————————
+" ligne écran précédente / suivante (à l'intérieur d'une phrase)
+noremap gs gk
+noremap gt gj
+" onglet précédant / suivant
+noremap gb gT
+noremap gé gt
+" optionnel : {gB} / {gÉ} pour aller au premier / dernier onglet
+noremap gB :exe "silent! tabfirst"<CR>
+noremap gÉ :exe "silent! tablast"<CR>
+" optionnel : {g"} pour aller au début de la ligne écran
+noremap g" g0
+~~~
+
