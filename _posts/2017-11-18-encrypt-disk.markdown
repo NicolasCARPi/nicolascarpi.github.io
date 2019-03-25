@@ -27,4 +27,26 @@ mkfs.ext4 /dev/mapper/$disk
 # mount it
 mkdir /mnt/$disk
 mount -t ext4 /dev/mapper/$disk /mnt/$disk
+# if it's a data disk, create a keyfile to avoid typing passphrase on boot
+# -E to keep env vars
+sudo -E su
+cd
+# create keyfile
+dd if=/dev/random bs=32 count=4 of=$disk.keyfile
+# set restrictive permissions on it
+chmod 400 data.keyfile
+# add the key
+cryptsetup luksAddKey $device /root/$disk.keyfile
+~~~
+
+Now edit `/etc/crypttab` and add a line similar to this:
+
+~~~conf
+data UUID=ca2e2e22-3a43… /root/data.keyfile luks,timeout=120
+~~~
+
+And it `/etc/fstab`:
+
+~~~conf
+/dev/mapper/data /mnt/data ext4 defaults,errors=remount-ro 0 2
 ~~~
