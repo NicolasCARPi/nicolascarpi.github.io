@@ -39,6 +39,8 @@ chmod 400 data.keyfile
 cryptsetup luksAddKey $device /root/$disk.keyfile
 ~~~
 
+Check the UUID of the LUKS partition with `lsblk -f`.
+
 Now edit `/etc/crypttab` and add a line similar to this:
 
 ~~~conf

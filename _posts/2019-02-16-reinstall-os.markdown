@@ -389,6 +389,8 @@ sudo systemctl start smartd
 sudo systemctl enable smartd
 ~~~
 
+You should receive one (or more) email from the smart daemon. Final step is to remove the "-M test" from the config file and restart the daemon.
+
 #### Cronjobs
 
 ~~~bash
