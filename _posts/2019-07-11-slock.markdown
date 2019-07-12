@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "screenlocker"
+date:   2019-07-11 00:46:44
+categories: utilities
+---
+My lock screen is a pixelated view of the current screen:
+
+
+[![scrot](/img/scrot.png)](/img/scrot.png)
+
+Here is how it's done.
+
+First, you need to install `scrot`, `imagemagick` and `i3lock`:
+
+~~~bash
+sudo pacman -Sy scrot imagemagick i3lock
+~~~
+
+Then, place this script somewhere in your $PATH (`~/.bin` is a good place):
+
+~~~bash
+#!/usr/bin/env bash
+# first take a screenshot of the current screen
+scrot /tmp/screen.png
+# make it small then big again
+convert /tmp/screen.png -scale 20% -scale 1000% -resize 1920x1200! /tmp/screen.png
+# lock the screen with this pixelated image
+i3lock -i /tmp/screen.png
+~~~
+
+The last step is to bind a shortcut that calls this script. I use Super-$, and because I use Awesome WM, the code looks like this:
+
+~~~lua
+awful.key({ modkey,      }, "$", function () awful.util.spawn("lock.sh") end,
+        {description = "lock screen", group = "utils"}),
+~~~
+
+To unlock, directly type your user password.
+
+~Nico
