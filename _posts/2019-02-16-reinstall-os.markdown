@@ -12,9 +12,11 @@ But doing this is not as easy as you might think. A lot of things can go wrong. 
 
 I'm writing this blog post while listening to the [full OST of Aladdin](https://www.youtube.com/watch?v=swNNkgUsjQk), the game from 1993. It reminds me when I was playing it in the supermarket when on holidays. Why isn't this a thing anymore? Free arcade games for the kids while the parents can go shopping, knowing their kid won't move an inch from the front of the arcade. I'm suggesting you open a tab and listen to it too ;)
 
+EDIT: system got reinstalled on another computer in October 2020, so this post has been updated with some missing details.
+
 ## Setting the keymap and time
 
-We have now booted on the live USB disk (in non UEFI mode (BIOS)). The first thing I do is setting the keymap:
+We have now booted on the live USB disk (in UEFI mode). The first thing I do is setting the keymap:
 
 ~~~bash
 loadkeys fr-bepo
@@ -26,28 +28,14 @@ timedatectl set-timezone Europe/Paris
 
 Depending on your setup and what you want, you might not want to follow exactly these steps.
 
-~~~
-gdisk /dev/sda
-# create GPT
-o
-# make new partition of 1M
-n
-1
-+1M
-# the first partition is the BIOS partition, type BIOS
-ef02
-# make a new partition for /boot
-n
-2
-# type Linux filesystem
-8300
-# the third partition is LVM
-n
-3
-8e00
-~~~
+On the main disk, GPT table, 4 partitions:
 
-I'm skipping all the LVM stuff, just read the wiki.
+* EFI (512M)
+* boot (512M)
+* swap (RAM/2)
+* root (rest)
+
+Root partition is encrypted with LUKS.
 
 ## Installation
 
@@ -220,7 +208,7 @@ passwd nico
 mkdir /home/nico
 chown nico:nico /home/nico
 # add it to wheel group
-usermod -g wheel ktr
+usermod -g wheel nico
 # configure sudo to allow wheel group to execute commands as root
 # there is a line to uncomment that looks like this: %wheel ALL=(ALL) ALL
 visudo
@@ -235,16 +223,33 @@ chsh -s /usr/bin/zsh
 zsh
 ~~~
 
+### Sound
+
+~~~bash
+sudo pacman -S pulseaudio pulseaudio-alsa alsa-utils
+systemctl start --user pulseaudio
+systemctl enable --user pulseaudio
+~~~
+
+Make sure to adapt the lua script for sound with the correct sound path!
+
+
 ### Graphical interface
 
 I can do a lot of things in the console as most of my favorite tools are text based (mutt, tmux, vim, git, ncmpcpp, …) but let's not be too nerdy and let's install a graphical interface with X11, our favorite crappy old unsafe software :)
 
 ~~~bash
 # install the graphics drivers, xinit, compositing manager, notification daemon, sound, music, cursor hider, terminal emulator and WM
-sudo pacman -S mesa xf86-video-amdgpu xorg-xinit xcompmgr twmnd pulseaudio mpd unclutter rxvt-unicode awesome pcmanfm firefox chromium
+# and some other stuff
+sudo pacman -S man mesa xf86-video-amdgpu xorg-xinit xcompmgr twmnd pulseaudio mpd mpc unclutter rxvt-unicode awesome pcmanfm firefox chromium gnupg pcmanfm mutt ruby sshfs conky xarchiver pinentry lxappearance w3m docker-compose filezilla owncloud-client pass python-pip pyenv
 ~~~
 
+Start lxappearance and select Vertex dark theme (yay -S vertex-themes-git vertex-icons-git).
+
+
 The content of my `~/.xinitrc` file:
+
+
 
 ~~~
 # file: ~/.xinitrc
@@ -291,6 +296,14 @@ Now the moment that we're all waiting for: starting Xorg!
 ~~~bash
 startx
 ~~~
+
+### Video / office
+
+~~~
+sudo pacman -S vlc libreoffice-fresh gpicview evince
+~~~
+
+
 
 Because all of my settings are nicely tracked in my [.dotfiles repository](https://github.com/NicolasCARPi/.dotfiles), all my custom shortcuts and everything are there. But some things are still missing of course!
 
