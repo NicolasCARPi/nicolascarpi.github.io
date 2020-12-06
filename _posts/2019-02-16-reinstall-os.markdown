@@ -356,7 +356,7 @@ See post on [Vim](/text/editor/cli/2014/09/22/vim.html).
 #### S.M.A.R.T monitoring of the disks
 
 ~~~bash
-sudo pacman -S smartmontools msmtp-mta
+sudo pacman -S smartmontools msmtp-mta mailx
 ~~~
 
 In `/etc/smartd.conf`:
@@ -398,6 +398,7 @@ account default : smtp2go
 ~~~
 
 ~~~bash
+chmod 600 /root/.msmtprc
 sudo systemctl start smartd
 sudo systemctl enable smartd
 ~~~
@@ -406,11 +407,7 @@ You should receive one (or more) email from the smart daemon. Final step is to r
 
 #### Cronjobs
 
-~~~bash
-sudo pacman -S cronie
-sudo systemctl start cronie
-sudo systemctl enable cronie
-~~~
+Use systemd service files.
 
 #### mutt config
 

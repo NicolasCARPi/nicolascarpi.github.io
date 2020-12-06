@@ -36,7 +36,7 @@ dd if=/dev/random bs=32 count=4 of=$disk.keyfile
 # set restrictive permissions on it
 chmod 400 data.keyfile
 # add the key
-cryptsetup luksAddKey $device /root/$disk.keyfile
+cryptsetup luksAddKey ${device}1 /root/$disk.keyfile
 ~~~
 
 Check the UUID of the LUKS partition with `lsblk -f`.
