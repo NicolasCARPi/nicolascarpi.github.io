@@ -135,9 +135,11 @@ GRUB_CMDLINE_LINUX_DEFAULT=""
 # the line for booting on encrypted partition
 # use 'blkid' and find one that looks like this:
 # /dev/mapper/myvol-myroot: UUID="fb2b71ff-c632-45d7-adbb-6c1038479f1a" TYPE="crypto_LUKS"
-GRUB_CMDLINE_LINUX="cryptdevice=UUID=fb2b71ff-c632-45d7-adbb-6c1038479f1a:root root=/dev/mapper/root"
+GRUB_CMDLINE_LINUX="loglevel=3 cryptdevice=UUID=fb2b71ff-c632-45d7-adbb-6c1038479f1a:root root=/dev/mapper/root"
 # add lvm in the preload modules
 GRUB_PRELOAD_MODULES="part_gpt part_msdos lvm"
+# set resolution
+GRUB_GFXMODE=1920x1080,auto
 # allow the kernel use the same resolution used by grub
 GRUB_GFXPAYLOAD_LINUX=keep
 # match grub theme with my desktop theme (green/black)
