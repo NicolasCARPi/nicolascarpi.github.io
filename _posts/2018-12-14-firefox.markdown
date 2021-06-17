@@ -38,6 +38,10 @@ In `about:preferences` block all third party cookies.
 
 ![cookies](/img/cookies-config.png)
 
+## Disable reporting and studies
+
+Uncheck data collection boxes, along with the studies one. Enable HTTPS-Only on all windows.
+
 ## Set the home page
 
 My home page is a local html file, found in my [.dotfiles repository]. It's pretty simple, it does nothing but allows you to write in it (*via* the *contenteditable* attribute). And the background color is the same as the UI.
