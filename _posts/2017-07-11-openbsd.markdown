@@ -3,6 +3,7 @@ layout: post
 title:  "elabftw on openbsd"
 date:   2017-07-11 18:13:37
 categories: install
+published: false
 ---
 Let's try and install [eLabFTW](https://www.elabftw.net) a free and open source electronic lab notebook (PHP/MySQL) on an [OpenBSD](https://www.openbsd.org/) VPS from [Vultr](http://www.vultr.com/?ref=7164540).
 
