@@ -60,6 +60,12 @@ I want to be able to go through my tabs with Ctrl-Tab and Ctrl-Shift-Tab to go i
 
 In `about:config` set `browser.ctrlTab.recentlyUsedOrder` to `false`.
 
+## Old behavior of downloaded files
+
+I don't want the download window to pop up every time I download a file, this fixes it:
+
+Set `browser.download.improvements_to_download_panel` to `false` in `about:config`.
+
 ## Miscellaneous
 
 * Save downloads in home (I don't have a Desktop folder anymore)
