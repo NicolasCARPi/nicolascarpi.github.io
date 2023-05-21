@@ -72,6 +72,12 @@ I don't want the download window to pop up every time I download a file, this f
 
 Set `browser.download.improvements_to_download_panel` to `false` in `about:config`.
 
+## Set default folder when uploading a file
+
+By default it's `Desktop`, but I don't have a `Desktop` folder, so it always creates one which is annoying. Set the default upload folder to something else with:
+
+`dom.input.fallbackUploadDir`.
+
 ## Miscellaneous
 
 * Save downloads in home (I don't have a Desktop folder anymore)
