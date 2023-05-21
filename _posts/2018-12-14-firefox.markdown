@@ -46,6 +46,12 @@ Uncheck data collection boxes, along with the studies one. Enable HTTPS-Only on 
 
 My home page is a local html file, found in my [.dotfiles repository]. It's pretty simple, it does nothing but allows you to write in it (*via* the *contenteditable* attribute). And the background color is the same as the UI.
 
+## Prevent the "remove from history" thing from requiring a tab
+
+When typing something in the address bar, there is now (May 2023) a button to remove that entry from history, and by default it is keyboard accessible, which means to switch to the entry below you need to type tab twice instead of once. Disable this behavior with:
+
+`browser.urlbar.resultMenu.keyboardAccessible` set to `false`
+
 ## A sane new tab
 
 I really dislike having my history displayed on a new tab.
