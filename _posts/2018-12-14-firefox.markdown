@@ -72,6 +72,8 @@ I don't want the download window to pop up every time I download a file, this f
 
 Set `browser.download.improvements_to_download_panel` to `false` in `about:config`.
 
+Also set `browser.download.start_downloads_in_tmp_dir` to true because now it seems the files are directly downloaded to home when viewed...
+
 ## Set default folder when uploading a file
 
 By default it's `Desktop`, but I don't have a `Desktop` folder, so it always creates one which is annoying. Set the default upload folder to something else with:

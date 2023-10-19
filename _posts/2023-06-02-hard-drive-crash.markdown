@@ -293,4 +293,13 @@ gem install tmuxinator jekyll
 pacman -S vlc libreoffice-fresh gpicview evince htop scrot gimp baobab filezilla php-cli picard cmatrix rsync
 ~~~
 
+## Yay
+
+To use `doas` with yay, use this:
+
+~~~bash
+yay --sudo doas --sudoflags -- --save
+~~~
+
+
 Now try `startx`!
