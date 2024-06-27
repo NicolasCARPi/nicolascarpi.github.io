@@ -89,6 +89,7 @@ By default it's `Desktop`, but I don't have a `Desktop` folder, so it always cre
 * Show menu bar and bookmarks toolbar
 * Put the NoScript icone in top left because that's where the mouse is closer to most often
 * Remove useless search engines and set the default as something else than google (I host my own [Searx] instance)
+* Set `network.trr.exclude-etc-hosts` to `false` so `/etc/hosts` can be used even with DoH
 
 
 That's about it. A lot more settings could be altered but we said *the first 5 minutes* ;)
