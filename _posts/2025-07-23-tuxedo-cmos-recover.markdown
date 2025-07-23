@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Recover from CMOS battery losing power on Tuxedo"
-date:   2027-07-23 13:37:00
+date:   2025-07-23 13:37:00
 categories: os archlinux
 ---
 
